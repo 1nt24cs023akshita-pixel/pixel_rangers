@@ -1,0 +1,78 @@
+{% extends 'accounts/base.html' %}
+
+{% block title %}My Orders - EcoFinds{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2 class="fw-bold text-white">
+                        <i class="fas fa-history me-2"></i>My Purchase History
+                    </h2>
+                    <p class="text-white-50">Track your previous purchases</p>
+                </div>
+                <a href="{% url 'products:product_list' %}" class="btn btn-outline-light">
+                    <i class="fas fa-shopping-bag me-2"></i>Continue Shopping
+                </a>
+            </div>
+
+            {% if orders %}
+                <div class="row">
+                    {% for order in orders %}
+                    <div class="col-12 mb-4">
+                        <div class="auth-card p-4">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    {% if order.product.image %}
+                                        <img src="{{ order.product.image.url }}" class="img-fluid rounded" alt="{{ order.product.title }}" style="height: 100px; object-fit: cover;">
+                                    {% else %}
+                                        <div class="bg-light d-flex align-items-center justify-content-center rounded" style="height: 100px;">
+                                            <i class="fas fa-image fa-2x text-muted"></i>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    <h5 class="mb-1">{{ order.product.title }}</h5>
+                                    <p class="text-muted small mb-1">
+                                        <i class="fas fa-user me-1"></i>Seller: {{ order.seller.username }}
+                                    </p>
+                                    <p class="text-muted small mb-1">
+                                        <i class="fas fa-tag me-1"></i>Category: {{ order.product.category.name }}
+                                    </p>
+                                    <p class="text-muted small mb-0">
+                                        <i class="fas fa-calendar me-1"></i>Ordered: {{ order.created_at|date:"M d, Y" }}
+                                    </p>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="text-center">
+                                        <span class="h6 text-success">{{ order.total_price|floatformat:2 }}</span>
+                                        <p class="text-muted small mb-0">Qty: {{ order.quantity }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <span class="badge bg-{% if order.status == 'delivered' %}success{% elif order.status == 'shipped' %}info{% elif order.status == 'confirmed' %}primary{% elif order.status == 'cancelled' %}danger{% else %}warning{% endif %} fs-6">
+                                        {{ order.get_status_display }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="text-center text-white">
+                    <i class="fas fa-receipt fa-4x mb-4"></i>
+                    <h3>No orders yet</h3>
+                    <p class="mb-4">Start shopping to see your purchase history here!</p>
+                    <a href="{% url 'products:product_list' %}" class="btn btn-success btn-lg">
+                        <i class="fas fa-shopping-bag me-2"></i>Start Shopping
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+

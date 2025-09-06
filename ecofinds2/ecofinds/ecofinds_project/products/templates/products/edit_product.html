@@ -1,0 +1,355 @@
+{% extends 'accounts/base.html' %}
+
+{% block title %}Edit Product - EcoFinds{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="auth-card p-5">
+                <div class="text-center mb-4">
+                    <i class="fas fa-edit text-primary" style="font-size: 3rem;"></i>
+                    <h2 class="mt-3">Edit Product</h2>
+                    <p class="text-muted">Update your product listing</p>
+                </div>
+
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <div class="row">
+                        <!-- Basic Information -->
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.title.id_for_label }}" class="form-label">
+                                <i class="fas fa-tag me-2"></i>Product Title *
+                            </label>
+                            {{ form.title }}
+                            {% if form.title.errors %}
+                                <div class="text-danger small mt-1">
+                                    {% for error in form.title.errors %}
+                                        <div>{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.category.id_for_label }}" class="form-label">
+                                <i class="fas fa-folder me-2"></i>Category *
+                            </label>
+                            {{ form.category }}
+                            {% if form.category.errors %}
+                                <div class="text-danger small mt-1">
+                                    {% for error in form.category.errors %}
+                                        <div>{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.condition.id_for_label }}" class="form-label">
+                                <i class="fas fa-star me-2"></i>Condition *
+                            </label>
+                            {{ form.condition }}
+                            {% if form.condition.errors %}
+                                <div class="text-danger small mt-1">
+                                    {% for error in form.condition.errors %}
+                                        <div>{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.price.id_for_label }}" class="form-label">
+                                <i class="fas fa-dollar-sign me-2"></i>Price *
+                            </label>
+                            {{ form.price }}
+                            {% if form.price.errors %}
+                                <div class="text-danger small mt-1">
+                                    {% for error in form.price.errors %}
+                                        <div>{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="{{ form.currency.id_for_label }}" class="form-label">
+                                <i class="fas fa-globe me-2"></i>Currency *
+                            </label>
+                            {{ form.currency }}
+                            {% if form.currency.errors %}
+                                <div class="text-danger small mt-1">
+                                    {% for error in form.currency.errors %}
+                                        <div>{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Smart Pricing Section -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0">
+                                <i class="fas fa-brain me-2"></i>Smart Pricing
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.original_price.id_for_label }}" class="form-label">
+                                        <i class="fas fa-tag me-2"></i>Original Price
+                                    </label>
+                                    {{ form.original_price }}
+                                    <div class="form-text">Original retail price for CO2 calculation</div>
+                                    {% if form.original_price.errors %}
+                                        <div class="text-danger small mt-1">
+                                            {% for error in form.original_price.errors %}
+                                                <div>{{ error }}</div>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.estimated_weight.id_for_label }}" class="form-label">
+                                        <i class="fas fa-weight me-2"></i>Estimated Weight (kg)
+                                    </label>
+                                    {{ form.estimated_weight }}
+                                    <div class="form-text">For CO2 savings calculation</div>
+                                    {% if form.estimated_weight.errors %}
+                                        <div class="text-danger small mt-1">
+                                            {% for error in form.estimated_weight.errors %}
+                                                <div>{{ error }}</div>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="form-check">
+                                {{ form.use_smart_pricing }}
+                                <label class="form-check-label" for="{{ form.use_smart_pricing.id_for_label }}">
+                                    <i class="fas fa-magic me-2"></i>Use Smart Pricing
+                                </label>
+                                <div class="form-text">Let AI suggest the best price based on condition and category</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="mb-3">
+                        <label for="{{ form.description.id_for_label }}" class="form-label">
+                            <i class="fas fa-align-left me-2"></i>Description *
+                        </label>
+                        {{ form.description }}
+                        {% if form.description.errors %}
+                            <div class="text-danger small mt-1">
+                                {% for error in form.description.errors %}
+                                    <div>{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Media Section -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0">
+                                <i class="fas fa-images me-2"></i>Media
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.image.id_for_label }}" class="form-label">
+                                        <i class="fas fa-image me-2"></i>Product Image *
+                                    </label>
+                                    {{ form.image }}
+                                    <div class="form-text">Upload a clear image of your product (JPG, PNG, GIF, WebP) - Max 10MB</div>
+                                    {% if form.image.errors %}
+                                        <div class="text-danger small mt-1">
+                                            {% for error in form.image.errors %}
+                                                <div><i class="fas fa-exclamation-triangle me-1"></i>{{ error }}</div>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.video.id_for_label }}" class="form-label">
+                                        <i class="fas fa-video me-2"></i>Product Video *
+                                    </label>
+                                    {{ form.video }}
+                                    <div class="form-text">Upload a video showing your product (MP4, AVI, MOV, WebM) - Max 50MB</div>
+                                    {% if form.video.errors %}
+                                        <div class="text-danger small mt-1">
+                                            {% for error in form.video.errors %}
+                                                <div><i class="fas fa-exclamation-triangle me-1"></i>{{ error }}</div>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <!-- Media requirement notice -->
+                            <div class="alert alert-warning">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                <strong>Media Requirement:</strong> Both an image and a video are required to showcase your product effectively.
+                            </div>
+
+                            <!-- Display form-level errors (like media validation) -->
+                            {% if form.non_field_errors %}
+                                <div class="alert alert-danger">
+                                    <i class="fas fa-exclamation-circle me-2"></i>
+                                    {% for error in form.non_field_errors %}
+                                        <div><strong>{{ error }}</strong></div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Location -->
+                    <div class="mb-4">
+                        <label for="{{ form.location.id_for_label }}" class="form-label">
+                            <i class="fas fa-map-marker-alt me-2"></i>Location
+                        </label>
+                        {{ form.location }}
+                        <div class="form-text">City, State/Country</div>
+                        {% if form.location.errors %}
+                            <div class="text-danger small mt-1">
+                                {% for error in form.location.errors %}
+                                    <div>{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'products:product_detail' pk=product.pk %}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Cancel
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i>Update Product
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.auth-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    border: none;
+    border-radius: 25px;
+    padding: 12px 30px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-secondary {
+    border-radius: 25px;
+    padding: 12px 30px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.form-control, .form-select {
+    border-radius: 15px;
+    border: 2px solid #e9ecef;
+    padding: 12px 20px;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.form-check-input:checked {
+    background-color: #667eea;
+    border-color: #667eea;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const currencySelect = document.getElementById('currency_select');
+    const priceInput = document.getElementById('price_input');
+    
+    // Currency symbols mapping
+    const currencySymbols = {
+        'USD': '$',
+        'EUR': '€',
+        'GBP': '£',
+        'INR': '₹',
+        'CAD': 'C$',
+        'AUD': 'A$',
+        'JPY': '¥',
+        'CNY': '¥',
+        'BRL': 'R$',
+        'MXN': '$'
+    };
+    
+    // Update currency display when selection changes
+    function updateCurrencyDisplay() {
+        const selectedCurrency = currencySelect.value;
+        const symbol = currencySymbols[selectedCurrency] || '$';
+        
+        // Update the price label
+        const priceLabel = document.querySelector('label[for="' + priceInput.id + '"]');
+        if (priceLabel) {
+            priceLabel.innerHTML = '<i class="fas fa-dollar-sign me-2"></i>Price (' + symbol + ') *';
+        }
+    }
+    
+    // Initial update
+    updateCurrencyDisplay();
+    
+    // Listen for currency changes
+    currencySelect.addEventListener('change', updateCurrencyDisplay);
+    
+    // Add some visual feedback
+    currencySelect.addEventListener('change', function() {
+        this.style.borderColor = '#667eea';
+        setTimeout(() => {
+            this.style.borderColor = '';
+        }, 1000);
+    });
+});
+</script>
+{% endblock %}
